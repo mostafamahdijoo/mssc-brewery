@@ -2,6 +2,7 @@ package guru.springframework.msscbrewery.web.controller;
 
 import guru.springframework.msscbrewery.service.BeerService;
 import guru.springframework.msscbrewery.web.model.BeerDto;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class BeerController {
     }
 
     @PostMapping("/")
-    public ResponseEntity handlePost(@RequestBody BeerDto beerDto) {
+    public ResponseEntity handlePost(@Valid @RequestBody BeerDto beerDto) {
         BeerDto savedDto = beerService.saveNewBeer(beerDto);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", savedDto.getId().toString());
@@ -31,7 +32,7 @@ public class BeerController {
     }
 
     @PutMapping("/{beerId}")
-    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, @RequestBody BeerDto beerDto) {
+    public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, @Valid @RequestBody BeerDto beerDto) {
         beerService.updateBeer(beerId, beerDto);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
